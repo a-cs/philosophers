@@ -6,7 +6,7 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 21:03:30 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/13 21:54:52 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/13 23:46:13 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	initialize_args(t_args *args, char **argv)
 		args->max_nbr_meals = ft_atoi(argv[5]);
 	else
 		args->max_nbr_meals = 0;
+	args->time_start = get_current_time_ms();
 }
 
 int	main(int argc, char **argv)
@@ -67,10 +68,8 @@ int	main(int argc, char **argv)
 	if (!is_valid_input(argc, argv))
 		return (1);
 	initialize_args(&args, argv);
-	printf("total %d\n",args.total);
-	printf("time_to_die %d\n",args.time_to_die);
-	printf("time_to_eat %d\n",args.time_to_eat);
-	printf("time_to_sleep %d\n",args.time_to_sleep);
-	printf("max_nbr_meals %d\n",args.max_nbr_meals);
+	sleeping(args);
+	thinking(args);
+	printf("total time = %lld\n", timestamp(args.time_start));
 	return (0);
 }
