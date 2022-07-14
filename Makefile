@@ -6,7 +6,7 @@
 #    By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 20:54:08 by acarneir          #+#    #+#              #
-#    Updated: 2022/07/06 22:46:49 by acarneir         ###   ########.fr        #
+#    Updated: 2022/07/12 22:02:28 by acarneir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC = $(SRC_DIR)/philosophers.c \
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) -o $(NAME)
+	@$(CC) -pthread $(OBJ) -o $(NAME)
 	@echo "Compiled!"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE)
