@@ -6,7 +6,7 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 21:03:30 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/15 23:31:24 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/16 00:44:08 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int				ft_atoi(char *str);
 void			delay_ms(int delay);
 void			print_action(t_obj *obj, int id, char *str);
 void			*routine(void *var);
+void			*observer_routine(void *var);
 long long int	get_current_time_ms(void);
 long long int	timestamp(long long int start);
 

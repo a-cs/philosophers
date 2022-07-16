@@ -6,7 +6,7 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 23:07:29 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/15 23:36:20 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/16 01:08:05 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,27 @@ void	print_action(t_obj *obj, int id, char *str)
 
 static void	sleeping(t_philo *philo)
 {
-	print_action(philo->obj, philo->id, "is sleeping");
-	// printf("%6lld %3d is sleeping\n", timestamp(philo->obj->time_start),
-	// 	philo->id);
+	print_action(philo->obj, philo->id + 1, "is sleeping");
 	delay_ms(philo->obj->time_to_sleep);
 }
 
 static void	thinking(t_philo *philo)
 {
-	print_action(philo->obj, philo->id, "is thinking");
-	// printf("%6lld %3d is thinking\n", timestamp(philo->obj->time_start),
-	// 	philo->id);
-	delay_ms(10);
+	print_action(philo->obj, philo->id + 1, "is thinking");
+}
+
+static void	eating(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->obj->mutex.forks[philo->left_fork]);
+	print_action(philo->obj, philo->id + 1, "has taken a fork");
+	pthread_mutex_lock(&philo->obj->mutex.forks[philo->right_fork]);
+	print_action(philo->obj, philo->id + 1, "has taken a fork");
+	print_action(philo->obj, philo->id + 1, "is eating");
+	delay_ms(philo->obj->time_to_eat);
+	philo->last_meal = get_current_time_ms();
+	philo->meal_counter++;
+	pthread_mutex_unlock(&philo->obj->mutex.forks[philo->left_fork]);
+	pthread_mutex_unlock(&philo->obj->mutex.forks[philo->right_fork]);
 }
 
 void	*routine(void *var)
@@ -41,13 +50,16 @@ void	*routine(void *var)
 
 	philo = var;
 	if (philo->id % 2 != 0)
-		delay_ms(2);
-	// while (!philo->obj->stop)
-	while (philo->meal_counter < philo->obj->max_nbr_meals)
+		delay_ms(5);
+	// while (philo->meal_counter < philo->obj->max_nbr_meals)
+	while (!philo->obj->stop)
 	{
-		sleeping(philo);
-		thinking(philo);
-		philo->meal_counter++;
+		if (!philo->obj->stop)
+			eating(philo);
+		if (!philo->obj->stop)
+			sleeping(philo);
+		if (!philo->obj->stop)
+			thinking(philo);
 	}
 	return (NULL);
 }

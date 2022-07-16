@@ -6,7 +6,7 @@
 #    By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 20:54:08 by acarneir          #+#    #+#              #
-#    Updated: 2022/07/13 23:44:16 by acarneir         ###   ########.fr        #
+#    Updated: 2022/07/16 00:50:36 by acarneir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 SRC_DIR = ./src
 SRC = $(SRC_DIR)/philosophers.c \
 		$(SRC_DIR)/actions.c \
+		$(SRC_DIR)/observer.c \
 		$(SRC_DIR)/utils/utils.c \
 		$(SRC_DIR)/utils/time.c
 
