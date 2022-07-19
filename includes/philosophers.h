@@ -6,7 +6,7 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 21:03:30 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/16 00:44:08 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/18 23:12:19 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_obj	t_obj;
 typedef struct s_mutex
 {
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*meal_counter;
 	pthread_mutex_t	print;
 }	t_mutex;
 
@@ -51,7 +52,7 @@ struct s_obj
 	int				stop;
 	long long int	time_start;
 	t_philo			*philos;
-	pthread_t		observer;
+	pthread_t		watcher;
 	t_mutex			mutex;
 };
 
@@ -59,7 +60,7 @@ int				ft_atoi(char *str);
 void			delay_ms(int delay);
 void			print_action(t_obj *obj, int id, char *str);
 void			*routine(void *var);
-void			*observer_routine(void *var);
+void			*watcher_routine(void *var);
 long long int	get_current_time_ms(void);
 long long int	timestamp(long long int start);
 

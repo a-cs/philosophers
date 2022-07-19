@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   observer.c                                         :+:      :+:    :+:   */
+/*   watcher.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../includes/philosophers.h"
 
-void	*observer_routine(void *var)
+void	*watcher_routine(void *var)
 {
 	int		i;
 	int		counter;
@@ -27,8 +27,10 @@ void	*observer_routine(void *var)
 			counter = 0;
 			while (i < obj->total_philos)
 			{
+				pthread_mutex_lock(&obj->mutex.meal_counter[i]);
 				if (obj->philos[i].meal_counter >= obj->max_nbr_meals)
 					counter++;
+				pthread_mutex_unlock(&obj->mutex.meal_counter[i]);
 				i++;
 			}
 			if (counter == obj->total_philos)
