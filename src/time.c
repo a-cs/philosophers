@@ -6,11 +6,11 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 23:08:17 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/13 23:40:02 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/20 00:05:23 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 long long int	get_current_time_ms(void)
 {

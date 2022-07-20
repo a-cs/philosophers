@@ -6,11 +6,19 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 22:07:50 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/19 23:16:30 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/20 00:06:56 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "../includes/philosophers.h"
+
+void	print_action(t_obj *obj, int id, char *str)
+{
+	pthread_mutex_lock(&obj->mutex.print);
+	if (!has_stoped(obj))
+		printf("%lld\t\t%d\t%s\n", timestamp(obj->time_start), id, str);
+	pthread_mutex_unlock(&obj->mutex.print);
+}
 
 static int	ft_isdigit(int c)
 {
@@ -34,7 +42,6 @@ int	ft_atoi(char *str)
 
 	while (ft_is_space(*str))
 		str++;
-	// str += ft_find_start(str, " 	\t\n\r\v\f");
 	signal = 1;
 	if (*str == '+' || *str == '-')
 	{

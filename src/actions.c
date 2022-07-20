@@ -6,19 +6,11 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 23:07:29 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/19 22:41:59 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/20 00:05:03 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
-
-void	print_action(t_obj *obj, int id, char *str)
-{
-	pthread_mutex_lock(&obj->mutex.print);
-	if (!has_stoped(obj))
-		printf("%lld\t\t%d\t%s\n", timestamp(obj->time_start), id, str);
-	pthread_mutex_unlock(&obj->mutex.print);
-}
 
 static void	sleeping(t_philo *philo)
 {
@@ -49,11 +41,25 @@ static void	eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->obj->mutex.forks[philo->right_fork]);
 }
 
+static void	only_one(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->obj->mutex.forks[philo->left_fork]);
+	print_action(philo->obj, philo->id + 1, "has taken a fork");
+	delay_ms(philo->obj->time_to_die);
+	print_action(philo->obj, philo->id + 1, "died");
+	pthread_mutex_unlock(&philo->obj->mutex.forks[philo->left_fork]);
+	pthread_mutex_lock(&philo->obj->mutex.stop);
+	philo->obj->stop = TRUE;
+	pthread_mutex_unlock(&philo->obj->mutex.stop);
+}
+
 void	*routine(void *var)
 {
 	t_philo	*philo;
 
 	philo = var;
+	if (philo->obj->total_philos == 1)
+		only_one(philo);
 	if (philo->id % 2 != 0)
 		delay_ms(5);
 	while (!has_stoped(philo->obj))
