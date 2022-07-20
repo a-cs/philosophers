@@ -6,7 +6,7 @@
 /*   By: acarneir <acarneir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 21:03:30 by acarneir          #+#    #+#             */
-/*   Updated: 2022/07/18 23:14:39 by acarneir         ###   ########.fr       */
+/*   Updated: 2022/07/19 22:48:57 by acarneir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	initialize_philos(t_obj *obj)
 		obj->philos[i].last_meal = get_current_time_ms();
 		pthread_mutex_init(&obj->mutex.forks[i], NULL);
 		pthread_mutex_init(&obj->mutex.meal_counter[i], NULL);
+		pthread_mutex_init(&obj->mutex.last_meal[i], NULL);
 		obj->philos[i].obj = obj;
 		i++;
 	}
@@ -71,8 +72,10 @@ void	initialize_obj(t_obj *obj, char **argv)
 	obj->mutex.forks = malloc(obj->total_philos * sizeof(pthread_mutex_t));
 	obj->mutex.meal_counter = malloc(obj->total_philos
 			* sizeof(pthread_mutex_t));
+	obj->mutex.last_meal = malloc(obj->total_philos * sizeof(pthread_mutex_t));
 	initialize_philos(obj);
 	pthread_mutex_init(&obj->mutex.print, NULL);
+	pthread_mutex_init(&obj->mutex.stop, NULL);
 }
 
 void	exit_philo(t_obj *obj)
@@ -84,15 +87,19 @@ void	exit_philo(t_obj *obj)
 	{
 		pthread_mutex_destroy(&obj->mutex.forks[i]);
 		pthread_mutex_destroy(&obj->mutex.meal_counter[i]);
+		pthread_mutex_destroy(&obj->mutex.last_meal[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&obj->mutex.print);
+	pthread_mutex_destroy(&obj->mutex.stop);
 	if (obj->philos)
 		free(obj->philos);
 	if (obj->mutex.forks)
 		free(obj->mutex.forks);
 	if (obj->mutex.meal_counter)
 		free(obj->mutex.meal_counter);
+	if (obj->mutex.last_meal)
+		free(obj->mutex.last_meal);
 }
 
 int	main(int argc, char **argv)
